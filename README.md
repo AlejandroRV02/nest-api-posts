@@ -12,8 +12,8 @@ This API has three main entities:
 
 ### Relations
 
-Users 1 - N Posts
-Posts 1 - N Comments
+- Users 1 - N Posts
+- Posts 1 - N Comments
 
 
 ## How to run this application
@@ -25,7 +25,8 @@ If you have docker installed, you can easily run this application
 ```bash
 $ docker-compose up -d
 ```
-This will create two containers, one for the database and the other will be the application itself
+This will create two containers, one for the database and the other will be the application itself.
+
 It also creates a volume to persist data, the API will be listening on port 8090 (if this creates a conflict locally, you can modify docker-compose.yml file and .env.developmet)
 
 ## Notes
