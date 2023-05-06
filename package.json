@@ -6,7 +6,7 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "jest --no-cache --maxWorkers=1 && jest --config ./test/jest-e2e.json && nest build",
+    "build": "jest --no-cache --maxWorkers=1 && jest --detectOpenHandles --config ./test/jest-e2e.json && nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
