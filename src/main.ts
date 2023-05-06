@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
-import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
@@ -21,13 +20,6 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/docs', app, document);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      transform: true,
-      transformOptions: { enableImplicitConversion: true }
-    }),
-  );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.enableCors();
 

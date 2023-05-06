@@ -1,4 +1,4 @@
-import { Module, OnApplicationBootstrap } from '@nestjs/common';
+import { Module, OnApplicationBootstrap, ValidationPipe } from '@nestjs/common';
 import { PostsModule } from './posts/infrastructure/posts.module';
 import { DatabaseModule } from './database.module';
 import { CommentsModule } from './comments/infrastructure/comments.module';
@@ -9,6 +9,7 @@ import * as Joi from 'joi';
 import { IUsersSeeder } from './users/infrastructure/seeder/IUsersSeeder';
 import { IPostsSeeder } from './posts/infrastructure/seeder/IPostsSeeder';
 import { ICommentsSeeder } from './comments/infrastructure/seeder/ICommentsSeeder';
+import { APP_PIPE } from '@nestjs/core';
 
 @Module({
   imports: [
@@ -33,7 +34,16 @@ import { ICommentsSeeder } from './comments/infrastructure/seeder/ICommentsSeede
     CommentsModule
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_PIPE,
+      useValue: new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true }
+      }),
+    }
+  ],
 })
 export class AppModule implements OnApplicationBootstrap {
 
