@@ -26,7 +26,7 @@ This API has three main entities:
 ### First time running the application
 
 The first time the app is ran, it seeds the database.
-- Creates 10 random user following the structure { email: 'user1@mail.com, password: 'password} (user2@mail.com, user3@mail.com) (All 10 users have the same password = "password")
+- Creates 10 random user following the structure { email: 'user1@mail.com', password: 'password'} (user2@mail.com, user3@mail.com) (All 10 users have the same password = "password")
 - Fetches posts from https://jsonplaceholder.typicode.com/posts and store them in database
 - Fetches commets from https://jsonplaceholder.typicode.com/comments and store them in database
 
@@ -38,6 +38,11 @@ $ docker-compose up -d
 This will create two containers, one for the database and the other will be the application itself.
 
 It also creates a volume to persist data, the API will be listening on port 8090 and database will use port 5432 (if this creates a conflict locally, you can modify docker-compose.yml file and .env.developmet)
+
+## Docs and endpoints
+
+Once you have the application runnning you can go to /api/docs
+You will see a Swagger Document where you can test the endpoints
 
 ## How to build the application
 This command will run:
