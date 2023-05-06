@@ -22,12 +22,16 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api/docs', app, document);
   app.useGlobalPipes(
-    new ValidationPipe(),
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true }
+    }),
   );
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
   app.enableCors();
 
   const configService = app.get(ConfigService);
-  await app.listen(configService.get('APP_PORT'));
+  await app.listen(configService.get('SERVER_PORT'));
 }
 bootstrap();

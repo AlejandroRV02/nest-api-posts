@@ -1,12 +1,14 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module, OnApplicationBootstrap } from '@nestjs/common';
 import { PostsModule } from './posts/infrastructure/posts.module';
-import { DatabaseModule } from './database/database.module';
+import { DatabaseModule } from './database.module';
 import { CommentsModule } from './comments/infrastructure/comments.module';
 import { UsersModule } from './users/infrastructure/users.module';
 import { ConfigModule } from "@nestjs/config";
+import { AuthModule } from './auth/infrastructure/auth.module';
 import * as Joi from 'joi';
+import { IUsersSeeder } from './users/infrastructure/seeder/IUsersSeeder';
+import { IPostsSeeder } from './posts/infrastructure/seeder/IPostsSeeder';
+import { ICommentsSeeder } from './comments/infrastructure/seeder/ICommentsSeeder';
 
 @Module({
   imports: [
@@ -25,11 +27,30 @@ import * as Joi from 'joi';
       }),
     }),
     DatabaseModule,
+    AuthModule,
     UsersModule,
     PostsModule,
     CommentsModule
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
-export class AppModule { }
+export class AppModule implements OnApplicationBootstrap {
+
+  constructor(
+    private readonly usersSeeder: IUsersSeeder,
+    private readonly postsSeeder: IPostsSeeder,
+    private readonly commentsSeeder: ICommentsSeeder,
+
+  ) { }
+
+  async onApplicationBootstrap() {
+    const result = await this.usersSeeder.setUsers()
+
+    if (result.continue) {
+      const posts = await this.postsSeeder.setPosts(result.users);
+      await this.commentsSeeder.setComments(posts);
+    }
+  }
+
+}
